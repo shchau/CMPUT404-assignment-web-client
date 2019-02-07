@@ -248,7 +248,6 @@ class TestHTTPClient(unittest.TestCase):
         req = http.POST( url, args=args )
         self.assertTrue(req != None, "None Returned!")
         self.assertTrue(req.code == 200)
-        print("Test Post Body: [%s]" % req.body)
         outargs = json.loads(req.body)
         print(outargs.__class__)
         for key in args:

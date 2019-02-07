@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # coding: utf-8
 # Copyright 2016 Abram Hindle, https://github.com/tywtyw2002, and https://github.com/treedust
-# 
+# Copyright 2019 Simon Chau
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -42,8 +42,6 @@ class HTTPClient(object):
 
 	def get_code(self, data):
 		split_data = data.split()
-		#print("Code Split_Data: ", split_data)
-
 
 		status_code = None
 		if (len(split_data) > 0):
@@ -59,7 +57,6 @@ class HTTPClient(object):
 
 	def get_body(self, data):
 		split_data = data.split("\r\n\r\n")
-		#print("Body Split_Data: ", split_data)
 		body = None
 		if (len(split_data) >= 2):
 			body = split_data[1]
@@ -87,8 +84,6 @@ class HTTPClient(object):
 		code = 500
 		body = ""
 		ParseResults = urllib.parse.urlparse(url)
-		#print(ParseResults)
-
 
 		path = ParseResults.path
 		if (path == ""):
@@ -105,13 +100,9 @@ class HTTPClient(object):
 		if (port == None):
 			port = 80
 
-		#print("HOST: ", host)
-		#print("PORT: ", port)
-
 		self.connect(host, port)
 		
 		request = "GET " + path + " HTTP/1.1\r\nHOST: " + host + "\r\n\r\n"  
-		#print("REQUEST: ", request) 
 		
 
 		self.sendall(request)
@@ -119,7 +110,6 @@ class HTTPClient(object):
 		self.close()
 		code = self.get_code(response)
 		body = self.get_body(response)
-		#print("Code: " + str(code) + " Body: " + str(body))
 
 		return HTTPResponse(code, body)
 
@@ -156,7 +146,6 @@ class HTTPClient(object):
 		request = "POST {} HTTP/1.1\r\nHost: {}\r\n".format(path, host) + \
 				"Content-Type: application/x-www-form-urlencoded" + "\r\n" + \
 				"Content-Length: {}\r\n\r\n{}\r\n\r\n".format(contentLength, content)  
-		print("REQUEST: ", request) 
 
 		self.sendall(request)
 		response = self.recvall(self.socket)
@@ -165,9 +154,6 @@ class HTTPClient(object):
 		code = self.get_code(response)
 		body = self.get_body(response)
 
-		
-		#print("Code: " + str(code) + " Body: " + str(body))
-		
 		return HTTPResponse(code, body)
 
 	def command(self, url, command="GET", args=None):
